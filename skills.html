@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Skills - Modern Portfolio Section</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            min-height: 100vh;
+        }
+
+        /* Main Container */
+        .skills-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* Individual Skill Card */
+        .skill-card {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 1px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Card background gradient */
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Hover Effects */
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Skill Icon */
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Skill Name */
+        .skill-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Skill Description */
+        .skill-description {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Progress Bar */
+        .skill-progress {
+            display: none;
+        }
+
+        .progress-fill {
+            display: none;
+        }
+
+        .progress-fill::after {
+            display: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Progress Percentage */
+        .skill-percentage {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .skills-container {
+                padding: 40px 15px;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .skill-card {
+                padding: 30px 20px;
+            }
+
+            .skill-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+
+            .skill-name {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .skill-card {
+                padding: 25px 15px;
+            }
+
+            .skill-icon {
+                width: 60px;
+            }
+        }
+
+        /* Large screens - 4 columns */
+        @media (min-width: 1024px) {
+            .skills-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Medium screens - 3 columns */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .skills-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Small tablets - 2 columns */
+        @media (min-width: 481px) and (max-width: 767px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="skills-container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <h1 class="section-title">My Skills</h1>
+            <p class="section-subtitle">
+                A showcase of my technical expertise and creative abilities, 
+                honed through years of dedicated learning and practical experience.
+            </p>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="skills-grid">
+            <!-- Skill Card 1 -->
+            <div class="skill-card">
+                <div class="skill-icon">💻</div>
+                <h3 class="skill-name">Web Development</h3>
+                <p class="skill-description">
+                    Building responsive and interactive websites with modern technologies and best practices.
+                </p>
+            </div>
+
+            <!-- Skill Card 2 -->
+            <div class="skill-card">
+                <div class="skill-icon">🎨</div>
+                <h3 class="skill-name">UI/UX Design</h3>
+                <p class="skill-description">
+                    Creating intuitive user interfaces and engaging user experiences with modern design principles.
+                </p>
+            </div>
+
+            <!-- Skill Card 3 -->
+            <div class="skill-card">
+                <div class="skill-icon">📱</div>
+                <h3 class="skill-name">Mobile Development</h3>
+                <p class="skill-description">
+                    Developing cross-platform mobile applications with native performance and user experience.
+                </p>
+            </div>
+
+            <!-- Skill Card 4 -->
+            <div class="skill-card">
+                <div class="skill-icon">☁️</div>
+                <h3 class="skill-name">Cloud Computing</h3>
+                <p class="skill-description">
+                    Deploying and managing applications on cloud platforms with scalability and security in mind.
+                </p>
+            </div>
+
+            <!-- Skill Card 5 -->
+            <div class="skill-card">
+                <div class="skill-icon">🔒</div>
+                <h3 class="skill-name">Cybersecurity</h3>
+                <p class="skill-description">
+                    Implementing security best practices and protecting applications from various threats.
+                </p>
+            </div>
+
+            <!-- Skill Card 6 -->
+            <div class="skill-card">
+                <div class="skill-icon">📊</div>
+                <h3 class="skill-name">Data Analysis</h3>
+                <p class="skill-description">
+                    Analyzing complex data sets to derive meaningful insights and support decision-making.
+                </p>
+            </div>
+
+            <!-- Skill Card 7 -->
+            <div class="skill-card">
+                <div class="skill-icon">🤖</div>
+                <h3 class="skill-name">Machine Learning</h3>
+                <p class="skill-description">
+                    Building intelligent systems and predictive models using advanced algorithms and frameworks.
+                </p>
+            </div>
+
+            <!-- Skill Card 8 -->
+            <div class="skill-card">
+                <div class="skill-icon">⚡</div>
+                <h3 class="skill-name">Performance Optimization</h3>
+                <p class="skill-description">
+                    Optimizing applications for speed, efficiency, and excellent user experience across all devices.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

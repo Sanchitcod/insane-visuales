@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #121212;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Section 1: Testimonial Carousel */
+        .testimonial-section {
+            padding: 80px 20px;
+            position: relative;
+            background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+        }
+
+        .testimonial-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #888888;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            min-width: 350px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            position: relative;
+            cursor: grab;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-card:active {
+            cursor: grabbing;
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .stars {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 5px;
+        }
+
+        .star {
+            color: #ffd700;
+            font-size: 18px;
+        }
+
+        .star.empty {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .review-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .reviewer-details h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .reviewer-details p {
+            font-size: 14px;
+            color: #888888;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .carousel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #ffffff;
+            transform: scale(1.2);
+        }
+
+        /* Section 2: 3D Element Section */
+        .element-section {
+            min-height: 100vh;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #121212 100%);
+            position: relative;
+        }
+
+        .element-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .element-left {
+            background: rgba(20, 20, 20, 0.5);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- MODIFIED CODE --- */
+        .spline-placeholder {
+            width: 100%;
+            height: 100%;
+        }
+        /* --- END MODIFIED CODE --- */
+
+        .element-right {
+            padding-left: 40px;
+        }
+
+        .element-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .element-description {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .feature-icon {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .testimonial-card {
+                min-width: 300px;
+                padding: 30px 20px;
+            }
+
+            .element-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .element-left {
+                height: 400px;
+            }
+
+            .element-right {
+                padding-left: 0;
+                text-align: center;
+            }
+
+            .carousel-controls {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .testimonial-card {
+                min-width: 280px;
+            }
+            
+            .testimonial-section,
+            .element-section {
+                padding: 60px 15px;
+            }
+        }
+
+        /* Smooth scrolling behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <section class="testimonial-section">
+        <div class="testimonial-container">
+            <div class="section-header">
+                <h1 class="section-title">What Our Customers Say</h1>
+                <p class="section-subtitle">Real experiences from real people who've transformed their journey with us</p>
+            </div>
+
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="testimonial-card">
+                        <div class="quote-icon">"</div>
+                        <div class="stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">
+                            "This product completely exceeded my expectations. The quality is outstanding and the customer service is top-notch. I've recommended it to all my friends!"
+                        </p>
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">JD</div>
+                            <div class="reviewer-details">
+                                <h4>Jane Doe</h4>
+                                <p>Marketing Director</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="quote-icon">"</div>
+                        <div class="stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <p class="review-text">
+                            "Amazing experience from start to finish. The team was professional, responsive, and delivered exactly what they promised. Highly recommend!"
+                        </p>
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">MS</div>
+                            <div class="reviewer-details">
+                                <h4>Mike Smith</h4>
+                                <p>Business Owner</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="quote-icon">"</div>
+                        <div class="stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">
+                            "I was skeptical at first, but this has been a game-changer for my business. The results speak for themselves. Best investment I've made this year."
+                        </p>
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">SA</div>
+                            <div class="reviewer-details">
+                                <h4>Sarah Anderson</h4>
+                                <p>Freelancer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="quote-icon">"</div>
+                        <div class="stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">
+                            "Outstanding quality and attention to detail. The support team is incredibly helpful and always available when needed. 5 stars all the way!"
+                        </p>
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">DW</div>
+                            <div class="reviewer-details">
+                                <h4>David Wilson</h4>
+                                <p>Tech Entrepreneur</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="quote-icon">"</div>
+                        <div class="stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <p class="review-text">
+                            "Solid product with great features. The interface is intuitive and the performance is reliable. Definitely worth the investment."
+                        </p>
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">LB</div>
+                            <div class="reviewer-details">
+                                <h4>Lisa Brown</h4>
+                                <p>Creative Director</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-controls">
+                    <button class="carousel-btn" id="prevBtn">‹</button>
+                    <button class="carousel-btn" id="nextBtn">›</button>
+                </div>
+
+                <div class="carousel-indicators" id="indicators"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="element-section">
+        <div class="element-container">
+            <div class="element-left">
+                <div class="spline-placeholder">
+                    <iframe src='https://my.spline.design/genkubgreetingrobot-ALeP54uK2ze4auxhuhOq1djZ/' frameborder='0' width='100%' height='100%'></iframe>
+                </div>
+            </div>
+            <div class="element-right">
+                <h2 class="element-title">why our coustomers love us</h2>
+                <p class="element-description">
+                    Discover our cutting-edge solutions through an immersive experience. 
+                   yes yes yes badi bat chit industry ka logo sa.
+                </p>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon"></div>
+                        <span>kya likhna hai yrr har jagha</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"></div>
+                        <span>nice nice stuff</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"></div>
+                        <span>mst video bnata hain</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"></div>
+                        <span>accha hai hum log</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        class TestimonialCarousel {
+            constructor() {
+                this.track = document.getElementById('carouselTrack');
+                this.cards = this.track.querySelectorAll('.testimonial-card');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.indicatorsContainer = document.getElementById('indicators');
+                
+                this.currentIndex = 0;
+                this.cardWidth = this.cards[0].offsetWidth + 30; // card width + gap
+                this.maxVisibleCards = this.getVisibleCards();
+                this.isDragging = false;
+                this.startX = 0;
+                this.currentTranslate = 0;
+                this.prevTranslate = 0;
+                this.animationId = 0;
+                this.autoScrollInterval = null;
+                
+                this.init();
+            }
+
+            init() {
+                this.createIndicators();
+                this.bindEvents();
+                this.startAutoScroll();
+                this.updateCarousel();
+            }
+
+            getVisibleCards() {
+                const containerWidth = this.track.parentElement.offsetWidth;
+                return Math.floor(containerWidth / this.cardWidth);
+            }
+
+            createIndicators() {
+                const totalSlides = Math.max(1, this.cards.length - this.maxVisibleCards + 1);
+                this.indicatorsContainer.innerHTML = '';
+                
+                for (let i = 0; i < totalSlides; i++) {
+                    const indicator = document.createElement('div');
+                    indicator.className = `indicator ${i === 0 ? 'active' : ''}`;
+                    indicator.addEventListener('click', () => this.goToSlide(i));
+                    this.indicatorsContainer.appendChild(indicator);
+                }
+            }
+
+            bindEvents() {
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+                // Touch/mouse events for dragging
+                this.track.addEventListener('mousedown', this.startDrag.bind(this));
+                this.track.addEventListener('touchstart', this.startDrag.bind(this));
+                this.track.addEventListener('mouseup', this.endDrag.bind(this));
+                this.track.addEventListener('touchend', this.endDrag.bind(this));
+                this.track.addEventListener('mousemove', this.drag.bind(this));
+                this.track.addEventListener('touchmove', this.drag.bind(this));
+                this.track.addEventListener('mouseleave', this.endDrag.bind(this));
+
+                // Pause auto-scroll on hover
+                this.track.addEventListener('mouseenter', () => this.stopAutoScroll());
+                this.track.addEventListener('mouseleave', () => this.startAutoScroll());
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    this.cardWidth = this.cards[0].offsetWidth + 30;
+                    this.maxVisibleCards = this.getVisibleCards();
+                    this.createIndicators();
+                    this.updateCarousel();
+                });
+            }
+
+            startDrag(e) {
+                this.isDragging = true;
+                this.startX = this.getPositionX(e);
+                this.prevTranslate = this.currentTranslate;
+                this.stopAutoScroll();
+                this.track.style.cursor = 'grabbing';
+            }
+
+            drag(e) {
+                if (!this.isDragging) return;
+                e.preventDefault();
+                
+                const currentPosition = this.getPositionX(e);
+                this.currentTranslate = this.prevTranslate + currentPosition - this.startX;
+                this.track.style.transform = `translateX(${this.currentTranslate}px)`;
+            }
+
+            endDrag() {
+                if (!this.isDragging) return;
+                this.isDragging = false;
+                this.track.style.cursor = 'grab';
+                
+                const movedBy = this.currentTranslate - this.prevTranslate;
+                
+                if (movedBy < -100 && this.currentIndex < this.cards.length - this.maxVisibleCards) {
+                    this.nextSlide();
+                } else if (movedBy > 100 && this.currentIndex > 0) {
+                    this.prevSlide();
+                } else {
+                    this.updateCarousel();
+                }
+                
+                this.startAutoScroll();
+            }
+
+            getPositionX(e) {
+                return e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            }
+
+            nextSlide() {
+                if (this.currentIndex < this.cards.length - this.maxVisibleCards) {
+                    this.currentIndex++;
+                } else {
+                    this.currentIndex = 0; // Loop back to start
+                }
+                this.updateCarousel();
+            }
+
+            prevSlide() {
+                if (this.currentIndex > 0) {
+                    this.currentIndex--;
+                } else {
+                    this.currentIndex = this.cards.length - this.maxVisibleCards; // Loop to end
+                }
+                this.updateCarousel();
+            }
+
+            goToSlide(index) {
+                this.currentIndex = index;
+                this.updateCarousel();
+            }
+
+            updateCarousel() {
+                const translateX = -this.currentIndex * this.cardWidth;
+                this.currentTranslate = translateX;
+                this.track.style.transform = `translateX(${translateX}px)`;
+                
+                // Update indicators
+                const indicators = this.indicatorsContainer.querySelectorAll('.indicator');
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === this.currentIndex);
+                });
+            }
+
+            startAutoScroll() {
+                this.stopAutoScroll();
+                this.autoScrollInterval = setInterval(() => {
+                    this.nextSlide();
+                }, 4000);
+            }
+
+            stopAutoScroll() {
+                if (this.autoScrollInterval) {
+                    clearInterval(this.autoScrollInterval);
+                    this.autoScrollInterval = null;
+                }
+            }
+        }
+
+        // Initialize carousel when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new TestimonialCarousel();
+        });
+    </script>
+</body>
+</html>

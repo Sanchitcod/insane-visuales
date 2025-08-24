@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix-Style Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">INSANE</a>
+            <ul class="nav-menu">
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contactus.html">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="skills.html" class="pick-button">Skills</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contactus.html">Contact</a></li>
+        </ul>
+    </div>
+
+     <div class="overlay"></div>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">INSANE VISUALS</h1>
+            <p class="hero-subtitle">Cinematic Excellence</p>
+            <button class="cta-button" data-scroll-to="picks">
+                Explore Work
+            </button>
+        </div>
+    </section>
+
+    <section class="picks-section fade-in-on-scroll" id="picks">
+        <div class="container">
+            <h2 class="section-title">Today's picks for you</h2>
+            <div class="picks-carousel-wrapper">
+                <div class="picks-carousel-container">
+                    <button class="carousel-nav prev" id="picks-prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="picks-carousel-track" id="picks-carousel-track">
+                        <article class="pick-card">
+                            <a href="skills.html" class="pick-button">Skills</a>
+                        </article>
+                        <article class="pick-card">
+                            <a href="projects.html" class="pick-button">Projects</a>
+                        </article>
+                        <article class="pick-card">
+                            <a href="testomonial.html" class="pick-button">Testimonial</a>
+                        </article>
+                        <article class="pick-card">
+                            <a href="myteam.html" class="pick-button">Our Team</a>
+                        </article>
+                        <article class="pick-card">
+                            <a href="about.html" class="pick-button">About us</a>
+                        </article>
+                    </div>
+                    <button class="carousel-nav next" id="picks-next">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="top10-section fade-in-on-scroll" id="top10">
+        <div class="container">
+            <h2 class="section-title">Top 10 of this week</h2>
+            <div class="carousel-wrapper">
+                <div class="carousel-container">
+                    <button class="carousel-nav prev" id="top10-prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-track" id="carousel-track">
+                        <article class="top10-card">
+                            <span class="rank-number">1</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">2</span>
+                            <a href="#contact" class="top10-button">check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">3</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">4</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">5</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">6</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">7</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">8</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">9</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                        <article class="top10-card">
+                            <span class="rank-number">10</span>
+                            <a href="#contact" class="top10-button">Check it out</a>
+                        </article>
+                    </div>
+                    <button class="carousel-nav next" id="top10-next">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /**
+     * ------------------------------------------------------------------------
+     * REUSABLE CAROUSEL CLASS
+     * ------------------------------------------------------------------------
+     * This class handles all carousel logic, removing the need for
+     * duplicated code for each carousel instance.
+     */
+    class Carousel {
+        constructor(trackSelector, prevButtonSelector, nextButtonSelector) {
+            this.track = document.querySelector(trackSelector);
+            this.prevButton = document.querySelector(prevButtonSelector);
+            this.nextButton = document.querySelector(nextButtonSelector);
+            this.cards = Array.from(this.track.children);
+            
+            this.currentIndex = 0;
+            this.cardWidth = 0;
+            this.cardsToShow = 0;
+            this.maxSlides = 0;
+
+            this.init();
+        }
+
+        init() {
+            if (!this.track) return;
+            this.setupCarousel();
+            this.bindEvents();
+        }
+
+        setupCarousel() {
+            // Dynamically calculate widths instead of using hardcoded values
+            const firstCard = this.cards[0];
+            if (!firstCard) return;
+            
+            const cardStyle = window.getComputedStyle(firstCard);
+            const cardMarginRight = parseFloat(cardStyle.marginRight);
+            this.cardWidth = firstCard.offsetWidth + cardMarginRight;
+
+            this.cardsToShow = Math.floor(this.track.parentElement.offsetWidth / this.cardWidth);
+            this.maxSlides = Math.max(0, this.cards.length - this.cardsToShow);
+            this.update();
+        }
+
+        bindEvents() {
+            this.prevButton.addEventListener('click', () => this.scroll(-1));
+            this.nextButton.addEventListener('click', () => this.scroll(1));
+            window.addEventListener('resize', () => this.setupCarousel());
+
+            // Touch/Swipe Support
+            let startX = 0;
+            let isDragging = false;
+            this.track.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+            this.track.addEventListener('touchmove', (e) => {
+                if (isDragging) e.preventDefault();
+            });
+            this.track.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                if (Math.abs(diff) > 50) { // Threshold
+                    this.scroll(diff > 0 ? 1 : -1);
+                }
+                isDragging = false;
+            });
+        }
+        
+        scroll(direction) {
+            this.currentIndex = Math.max(0, Math.min(this.maxSlides, this.currentIndex + direction));
+            this.update();
+        }
+
+        update() {
+            this.track.style.transform = `translateX(-${this.currentIndex * this.cardWidth}px)`;
+            this.prevButton.style.display = this.currentIndex === 0 ? 'none' : 'flex';
+            this.nextButton.style.display = this.currentIndex === this.maxSlides ? 'none' : 'flex';
+        }
+    }
+
+    // --- Initialize both carousels using the new class ---
+    new Carousel('#picks-carousel-track', '#picks-prev', '#picks-next');
+    new Carousel('#carousel-track', '#top10-prev', '#top10-next');
+
+    
+    /**
+     * ------------------------------------------------------------------------
+     * NAVBAR & SMOOTH SCROLL
+     * ------------------------------------------------------------------------
+     */
+    const setupNavbar = () => {
+        const navbar = document.querySelector('.navbar');
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const overlay = document.querySelector('.overlay');
+        
+        const toggleMenu = () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        };
+
+        hamburger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Combined smooth scroll for all links and buttons
+        document.body.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-scroll-to], .nav-menu a, .mobile-menu a');
+            if (!target) return;
+
+            e.preventDefault();
+            const sectionId = target.dataset.scrollTo || target.getAttribute('href')?.substring(1);
+            const section = document.getElementById(sectionId);
+            
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            if (mobileMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    };
+    setupNavbar();
+
+
+    /**
+     * ------------------------------------------------------------------------
+     * SCROLL-BASED FADE-IN ANIMATIONS
+     * ------------------------------------------------------------------------
+     */
+    const setupScrollAnimations = () => {
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Stagger animation for cards inside the visible section
+                    entry.target.querySelectorAll('.pick-card, .top10-card').forEach((card, index) => {
+                        card.style.animationDelay = `${index * 0.1}s`;
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-on-scroll').forEach(el => observer.observe(el));
+    };
+    setupScrollAnimations();
+});
+</script>
+
+</body>
+</html>

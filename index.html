@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix-Style Landing Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000000 70%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Animated background spotlight */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 50%);
+            animation: spotlightMove 20s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes spotlightMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-20px, -30px) scale(1.1); }
+            50% { transform: translate(20px, 20px) scale(0.9); }
+            75% { transform: translate(-10px, 30px) scale(1.05); }
+        }
+
+        /* Red glow effect */
+        .red-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(229, 9, 20, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            z-index: 2;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .red-glow.active {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 1;
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 3;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #e50914, #f40612);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 20px 60px rgba(229, 9, 20, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .logo:hover::before {
+            animation: shine 1.5s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+
+        .logo-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        /* Welcome text animation */
+        .welcome-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 64px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            z-index: 4;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            letter-spacing: 3px;
+        }
+
+        .welcome-text.show {
+            animation: welcomeReveal 2s ease-out forwards;
+        }
+
+        @keyframes welcomeReveal {
+            0% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.8); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1.1); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+        }
+
+        /* Start watching button */
+        .start-button {
+            position: absolute;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #e50914, #f40612);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            opacity: 0;
+            z-index: 4;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-button.show {
+            animation: buttonSlideUp 1s ease-out 2.5s forwards;
+        }
+
+        .start-button:hover {
+            background: linear-gradient(45deg, #f40612, #e50914);
+            transform: translateX(-50%) translateY(-4px);
+            box-shadow: 0 12px 35px rgba(229, 9, 20, 0.6);
+        }
+
+        @keyframes buttonSlideUp {
+            from { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0); 
+            }
+        }
+
+        /* Hide logo after animation */
+        .logo-container.hidden {
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.8s ease;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo {
+                width: 150px;
+                height: 150px;
+            }
+
+            .logo-text {
+                font-size: 36px;
+            }
+
+            .welcome-text {
+                font-size: 42px;
+                padding: 0 20px;
+            }
+
+            .start-button {
+                padding: 14px 35px;
+                font-size: 16px;
+            }
+
+            .red-glow {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .logo-text {
+                font-size: 28px;
+            }
+
+            .welcome-text {
+                font-size: 32px;
+            }
+
+            .start-button {
+                padding: 12px 30px;
+                font-size: 14px;
+                bottom: 25%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="red-glow"></div>
+        
+        <div class="logo-container" id="logoContainer">
+    <div id="logoContainer" style="
+    width: 200px;
+    height: 200px;
+    background-color: #e53935;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+">
+    <div style="display: block;">
+        <span style="font-size: 64px; font-weight: bold; display: block;">IV</span>
+        <span style="font-size: 18px; font-weight: 500; margin-top: 4px; letter-spacing: 1px; display: block;">STUDIO</span>
+    </div>
+</div>
+</div>
+
+        <div class="welcome-text" id="welcomeText">
+            Welcome to My portfolio
+        </div>
+
+        <button class="start-button" id="startButton">
+            Start Watching
+        </button>
+    </div>
+
+    <script>
+        // Create audio context and generate intro sound
+        let audioContext;
+        let isAnimationPlayed = false;
+
+        function createIntroSound() {
+    // Create a new Audio object with a link to the sound file.
+    // This is a filler "tada" sound. Replace the link with your own MP3 link.
+    const introSound = new Audio('static/audio/Netflix-Intro.mp3');
+    
+    // Play the sound.
+    introSound.play();
+}
+
+        function playIntroAnimation() {
+            if (isAnimationPlayed) return;
+            
+            isAnimationPlayed = true;
+            
+            // Play intro sound
+            createIntroSound();
+            
+            const redGlow = document.querySelector('.red-glow');
+            const logoContainer = document.getElementById('logoContainer');
+            const welcomeText = document.getElementById('welcomeText');
+            const startButton = document.getElementById('startButton');
+            
+            // Trigger red glow effect
+            setTimeout(() => {
+                redGlow.classList.add('active');
+            }, 200);
+            
+            // Remove red glow and hide logo
+            setTimeout(() => {
+                redGlow.classList.remove('active');
+                logoContainer.classList.add('hidden');
+            }, 800);
+            
+            // Show welcome text
+            setTimeout(() => {
+                welcomeText.classList.add('show');
+            }, 1200);
+            
+            // Show start button
+            setTimeout(() => {
+                startButton.classList.add('show');
+            }, 2500);
+        }
+
+        // Initialize audio context on first user interaction
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Add click event listener to logo
+        document.getElementById('logoContainer').addEventListener('click', () => {
+            initAudioContext();
+            playIntroAnimation();
+        });
+
+        // Add click event to start button to link to another page
+        document.getElementById('startButton').addEventListener('click', () => {
+            // This line redirects the user to your main portfolio page
+            window.location.href = 'main.html'; // Change this to your actual portfolio page URL
+        });
+
+        // Handle touch events for mobile
+        document.getElementById('logoContainer').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            initAudioContext();
+            playIntroAnimation();
+        });
+
+        // Initialize audio context on any user interaction
+        document.addEventListener('click', initAudioContext, { once: true });
+        document.addEventListener('touchstart', initAudioContext, { once: true });
+    </script>
+</body>
+</html>
